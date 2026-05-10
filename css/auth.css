@@ -1,0 +1,10 @@
+/* Sign in and sign up page styles */
+.auth-page {
+  min-height: calc(100vh - 7rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-page .auth-shell {
+  flex: 1;
+}

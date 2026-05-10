@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZNS Dental Clinic</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/homepage.css" />
+</head>
+<body class="homepage">
+  <header class="topbar">
+    <a class="brand" href="homepage.html" aria-label="ZNS Dental Clinic home">
+      <img class="brand-mark" src="assets/logo.svg" alt="" />
+      <span>
+        <strong>ZNS</strong>
+        <small>Dental Clinic</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#services">Services</a>
+      <a href="#doctors">Doctors</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#contact">Contact</a>
+      <div class="auth-buttons">
+        <a class="btn btn-small" href="login.html?tab=login">Sign In</a>
+        <a class="btn btn-small btn-soft" href="login.html?tab=signup">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page active" id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">Your Smile, Our Passion</span>
+          <h1>Quality Dental Care for a Healthier Smile</h1>
+          <p>We provide gentle, reliable, and affordable dental services for patients and families in a clean, friendly environment.</p>
+          <a class="btn" href="login.html?tab=login">Make an Appointment</a>
+        </div>
+        <div class="hero-visual" aria-label="Dental clinic illustration">
+          <div class="clinic-card">
+            <div class="chair"></div>
+            <div class="lamp"></div>
+            <img class="tooth-mascot" src="assets/tooth-mascot.svg" alt="Friendly tooth mascot" />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-heading">
+          <span>About Us</span>
+          <h2>Friendly dental care since 2014</h2>
+        </div>
+        <div class="split-grid">
+          <article class="info-panel">
+            <p>ZNS Dental Clinic serves patients in Barangay Dalandanan, Valenzuela City with appointment-based dental care. The website prototype helps patients explore services, request appointments, and view clinic information online.</p>
+            <a class="btn btn-soft" href="login.html?tab=signup">Start Booking</a>
+          </article>
+          <div class="feature-list">
+            <article class="mini-card">
+              <span class="icon">01</span>
+              <strong>Experienced Dentists</strong>
+              <p>Organized service flow for patient visits.</p>
+            </article>
+            <article class="mini-card">
+              <span class="icon">02</span>
+              <strong>Modern Interface</strong>
+              <p>Clear forms, summaries, and records.</p>
+            </article>
+            <article class="mini-card">
+              <span class="icon">03</span>
+              <strong>Patient-Centered</strong>
+              <p>Built for simple appointment requests.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="section-heading center">
+          <span>Our Services</span>
+          <h2>Dental services offered</h2>
+        </div>
+        <div class="service-grid" id="service-grid"></div>
+      </section>
+
+      <section class="section" id="doctors">
+        <div class="section-heading center">
+          <span>Our Doctors</span>
+          <h2>Clinic dentist schedule</h2>
+        </div>
+        <div class="doctor-grid">
+          <article class="doctor-card">
+            <div class="avatar">PS</div>
+            <h3>Dra. Paula Glenn Z. Salamante</h3>
+            <p>General Dentist</p>
+            <small>Mon, Wed, Fri - 8:00 AM to 5:00 PM</small>
+          </article>
+          <article class="doctor-card">
+            <div class="avatar">MS</div>
+            <h3>Dr. Michael D. Santos</h3>
+            <p>Orthodontist</p>
+            <small>Tue, Thu - 9:00 AM to 4:00 PM</small>
+          </article>
+          <article class="doctor-card">
+            <div class="avatar">AR</div>
+            <h3>Dr. Andrea M. Reyes</h3>
+            <p>General Dentist</p>
+            <small>Saturday - 8:30 AM to 3:30 PM</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="testimonials">
+        <div class="section-heading center">
+          <span>Testimonials</span>
+          <h2>What our patients say</h2>
+        </div>
+        <div class="testimonial-list" id="testimonial-list"></div>
+        <div class="review-note">
+          <p>Want to add your review? Sign in as a User / Patient and add it from your dashboard.</p>
+          <a class="btn btn-soft" href="login.html?tab=login">Add Review</a>
+        </div>
+      </section>
+
+      <section class="appointment-strip">
+        <div>
+          <strong>Ready to take care of your smile?</strong>
+          <p>Book your appointment request today.</p>
+        </div>
+        <a class="btn" href="login.html?tab=login">Make an Appointment</a>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div class="section-heading">
+          <span>Contact Us</span>
+          <h2>Visit ZNS Dental Clinic</h2>
+        </div>
+        <div class="contact-grid">
+          <article>
+            <strong>Location</strong>
+            <p>181 Mc Arthur Highway, Dalandanan, Valenzuela, Philippines, 1443</p>
+          </article>
+          <article>
+            <strong>Phone</strong>
+            <p>(02) 1234 5678</p>
+          </article>
+          <article>
+            <strong>Email</strong>
+            <p>znsdentalclinic@gmail.com</p>
+          </article>
+          <article>
+            <strong>Clinic Hours</strong>
+            <p>Monday - Saturday, 8:00 AM - 6:00 PM</p>
+          </article>
+          <article>
+            <strong>Facebook</strong>
+            <a class="facebook-link" href="https://web.facebook.com/profile.php?id=100064027629816" target="_blank" rel="noreferrer">
+              <img src="assets/facebook.svg" alt="" />
+              ZNS Dental Clinic
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div>
+          <strong>ZNS Dental Clinic</strong>
+          <p>Your partner in maintaining a healthy and beautiful smile.</p>
+        </div>
+        <div>
+          <strong>Quick Links</strong>
+          <a href="#services">Services</a>
+          <a href="#doctors">Doctors</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div>
+          <strong>Contact</strong>
+          <p>181 Mc Arthur Highway, Dalandanan</p>
+          <p>(02) 1234 5678</p>
+          <a class="footer-social" href="https://web.facebook.com/profile.php?id=100064027629816" target="_blank" rel="noreferrer">
+            <img src="assets/facebook.svg" alt="" />
+            Facebook
+          </a>
+        </div>
+        <div class="footer-bottom">&copy; 2026 ZNS Dental Clinic. All rights reserved.</div>
+      </footer>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/shared.js"></script>
+  <script src="js/homepage.js"></script>
+</body>
+</html>

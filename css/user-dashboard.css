@@ -1,0 +1,8 @@
+/* User dashboard-specific styles */
+.dashboard-review-panel {
+  margin-top: 1rem;
+}
+
+.dashboard-review-panel .testimonial-form {
+  min-height: 100%;
+}

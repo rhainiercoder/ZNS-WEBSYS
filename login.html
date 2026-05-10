@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | ZNS Dental Clinic</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="homepage.html" aria-label="ZNS Dental Clinic home">
+      <img class="brand-mark" src="assets/logo.svg" alt="" />
+      <span>
+        <strong>ZNS</strong>
+        <small>Dental Clinic</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="homepage.html#home">Home</a>
+      <a href="homepage.html#services">Services</a>
+      <a href="homepage.html#doctors">Doctors</a>
+      <a href="homepage.html#testimonials">Testimonials</a>
+      <a href="homepage.html#contact">Contact</a>
+      <button class="btn btn-small" type="button" data-auth-tab="login">Sign In</button>
+      <button class="btn btn-small btn-soft" type="button" data-auth-tab="signup">Sign Up</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page active auth-page">
+      <div class="auth-shell">
+        <aside class="auth-welcome">
+          <div class="brand brand-light">
+            <img class="brand-mark" src="assets/logo.svg" alt="" />
+            <span>
+              <strong>ZNS</strong>
+              <small>Dental Clinic</small>
+            </span>
+          </div>
+          <h2>Welcome to ZNS Dental Clinic</h2>
+          <p>Create an account or sign in to continue as a User/Patient or Admin/Clinic Staff & Dentist.</p>
+          <div class="safe-card">
+            <strong>Clinic Notice</strong>
+            <p>Account information is saved only in this browser for the WS101 front-end prototype.</p>
+          </div>
+        </aside>
+
+        <section class="auth-panel">
+          <span class="eyebrow">Account Access</span>
+          <h1>Sign In or Sign Up</h1>
+          <p>Use an account saved in this browser. This is a front-end authentication simulation.</p>
+
+          <div class="auth-tabs" role="tablist" aria-label="Authentication options">
+            <button class="active" type="button" data-auth-tab="login">Sign In</button>
+            <button type="button" data-auth-tab="signup">Sign Up</button>
+          </div>
+
+          <form class="auth-form active" id="login-form" data-auth-panel="login">
+            <div class="form-row full">
+              <label for="loginEmail">Email Address</label>
+              <input id="loginEmail" name="email" type="email" placeholder="patient@example.com" required />
+            </div>
+            <div class="form-row full">
+              <label for="loginPassword">Password</label>
+              <input id="loginPassword" name="password" type="password" placeholder="Enter password" required />
+            </div>
+            <button class="btn" type="submit">Sign In</button>
+          </form>
+
+          <form class="auth-form" id="signup-form" data-auth-panel="signup">
+            <div class="form-row">
+              <label for="signupName">Full Name</label>
+              <input id="signupName" name="fullName" type="text" placeholder="Juan Dela Cruz" required />
+            </div>
+            <div class="form-row">
+              <label for="signupPhone">Contact Number</label>
+              <input id="signupPhone" name="phone" type="tel" placeholder="0912 345 6789" required />
+            </div>
+            <div class="form-row">
+              <label for="signupEmail">Email Address</label>
+              <input id="signupEmail" name="email" type="email" placeholder="patient@example.com" required />
+            </div>
+            <div class="form-row">
+              <label for="signupRole">Account Type</label>
+              <select id="signupRole" name="role" required>
+                <option value="patient">User / Patient</option>
+                <option value="admin">Admin / Clinic Staff & Dentist</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="signupPassword">Password</label>
+              <input id="signupPassword" name="password" type="password" minlength="6" placeholder="At least 6 characters" required />
+            </div>
+            <div class="form-row">
+              <label for="signupConfirm">Confirm Password</label>
+              <input id="signupConfirm" name="confirmPassword" type="password" minlength="6" placeholder="Confirm password" required />
+            </div>
+            <div class="form-actions full">
+              <button class="btn" type="submit">Sign Up</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <footer class="site-footer compact-footer page-footer-bottom">
+        <div>
+          <strong>ZNS Dental Clinic</strong>
+          <p>Sign in and sign up page for the front-end prototype.</p>
+        </div>
+        <div class="footer-bottom">&copy; 2026 ZNS Dental Clinic. All rights reserved.</div>
+      </footer>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/shared.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

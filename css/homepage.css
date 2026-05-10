@@ -1,0 +1,9 @@
+/* Homepage-specific styles */
+.homepage .hero {
+  position: relative;
+}
+
+.homepage .review-note {
+  margin-inline: auto;
+  max-width: 56rem;
+}

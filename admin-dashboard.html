@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | ZNS Dental Clinic</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/admin-dashboard.css" />
+</head>
+<body>
+  <main>
+    <section class="page app-page active">
+      <aside class="sidebar">
+        <div class="brand brand-light">
+          <img class="brand-mark" src="assets/logo.svg" alt="" />
+          <span>
+            <strong>ZNS</strong>
+            <small>Dental Clinic</small>
+          </span>
+        </div>
+        <div class="profile-chip">
+          <img class="profile-chip-photo" src="assets/patient-avatar.svg" alt="Profile picture" />
+          <div>
+            <strong>Admin</strong>
+            <small>Admin / Clinic Staff & Dentist</small>
+          </div>
+        </div>
+        <nav class="side-nav" aria-label="Admin navigation">
+          <button class="active" type="button" data-admin-view="dashboard"><span class="nav-icon">D</span>Dashboard</button>
+          <button type="button" data-admin-view="appointments"><span class="nav-icon">A</span>Appointments</button>
+          <button type="button" data-admin-view="patients"><span class="nav-icon">P</span>Patients</button>
+          <button type="button" data-admin-view="dentists"><span class="nav-icon">DR</span>Dentists</button>
+          <button type="button" data-admin-view="services"><span class="nav-icon">SV</span>Services</button>
+          <button type="button" data-admin-view="reports"><span class="nav-icon">RP</span>Reports</button>
+          <button type="button" data-admin-view="settings"><span class="nav-icon">S</span>Settings</button>
+          <button type="button" data-logout><span class="nav-icon">X</span>Log Out</button>
+        </nav>
+      </aside>
+
+      <section class="app-content">
+        <div class="mobile-appbar">
+          <button class="menu-toggle app-menu-toggle" type="button" aria-label="Open sidebar">
+            <span></span><span></span><span></span>
+          </button>
+          <strong>Admin Dashboard</strong>
+        </div>
+
+        <div class="admin-view active" data-admin-panel="dashboard">
+          <section class="page-title">
+            <span class="eyebrow">Admin</span>
+            <h1>Clinic Staff & Dentist Dashboard</h1>
+            <p>Overview of appointment requests, patient records, and dentist schedule.</p>
+          </section>
+          <div class="stat-grid">
+            <article class="stat-card"><strong id="admin-request-count">0</strong><span>Appointment Requests</span></article>
+            <article class="stat-card"><strong id="admin-patient-count">0</strong><span>Total Patients</span></article>
+            <article class="stat-card"><strong>3</strong><span>Dentists on Duty</span></article>
+            <article class="stat-card"><strong>6</strong><span>Services Offered</span></article>
+          </div>
+          <article class="panel">
+            <div class="panel-header admin-tools">
+              <h2>Appointment Requests</h2>
+              <input class="search-input" id="admin-search" type="search" placeholder="Search patient or service..." />
+              <select id="admin-status-filter">
+                <option value="all">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Patient</th><th>Service</th><th>Date & Time</th><th>Dentist</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="admin-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="admin-view" data-admin-panel="appointments">
+          <section class="page-title"><span class="eyebrow">Appointments</span><h1>Manage Appointment Requests</h1><p>Search, filter, confirm, complete, or cancel local appointment records.</p></section>
+          <article class="panel">
+            <div class="panel-header admin-tools">
+              <h2>All Appointment Records</h2>
+              <input class="search-input" id="admin-appointments-search" type="search" placeholder="Search appointments..." />
+              <select id="admin-appointments-status">
+                <option value="all">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Patient</th><th>Service</th><th>Date & Time</th><th>Dentist</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="admin-appointments-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="admin-view" data-admin-panel="patients">
+          <section class="page-title"><span class="eyebrow">Patients</span><h1>Patient Records</h1><p>Simple patient list generated from locally stored appointment requests.</p></section>
+          <div class="record-grid" id="admin-patient-list"></div>
+        </div>
+
+        <div class="admin-view" data-admin-panel="dentists">
+          <section class="page-title"><span class="eyebrow">Dentists</span><h1>Dentist Availability</h1><p>Static schedule for the front-end prototype.</p></section>
+          <div class="doctor-grid compact-doctor-grid">
+            <article class="doctor-card"><div class="avatar">PS</div><h3>Dra. Paula Glenn Z. Salamante</h3><p>General Dentist</p><small>Mon, Wed, Fri - 8:00 AM to 5:00 PM</small></article>
+            <article class="doctor-card"><div class="avatar">MS</div><h3>Dr. Michael D. Santos</h3><p>Orthodontist</p><small>Tue, Thu - 9:00 AM to 4:00 PM</small></article>
+            <article class="doctor-card"><div class="avatar">AR</div><h3>Dr. Andrea M. Reyes</h3><p>General Dentist</p><small>Saturday - 8:30 AM to 3:30 PM</small></article>
+          </div>
+        </div>
+
+        <div class="admin-view" data-admin-panel="services">
+          <section class="page-title"><span class="eyebrow">Services</span><h1>Clinic Services</h1><p>Service cards use the cyan, blue, and green gradient style.</p></section>
+          <div class="service-grid" id="admin-service-grid"></div>
+        </div>
+
+        <div class="admin-view" data-admin-panel="reports">
+          <section class="page-title"><span class="eyebrow">Reports</span><h1>LocalStorage Report</h1><p>A simple front-end report based on browser-stored appointment records.</p></section>
+          <div class="content-grid two-col">
+            <article class="panel" id="admin-report-summary"></article>
+            <article class="panel"><h2>Prototype Limitations</h2><p>This report is generated using JavaScript only. Real clinic reporting requires backend storage, authentication, and secure database access.</p></article>
+          </div>
+        </div>
+
+        <div class="admin-view" data-admin-panel="settings">
+          <section class="page-title"><span class="eyebrow">Admin Settings</span><h1>Account Information</h1><p>View the current simulated admin profile stored in the browser.</p></section>
+          <article class="panel profile-summary" id="admin-profile-summary"></article>
+        </div>
+
+        <footer class="site-footer compact-footer app-footer">
+          <div>
+            <strong>ZNS Dental Clinic</strong>
+            <p>Admin appointment management prototype.</p>
+          </div>
+          <div class="footer-bottom">&copy; 2026 ZNS Dental Clinic.</div>
+        </footer>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/shared.js"></script>
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

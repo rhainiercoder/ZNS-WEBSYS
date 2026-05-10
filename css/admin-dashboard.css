@@ -1,0 +1,4 @@
+/* Admin dashboard-specific styles */
+.admin-view .panel {
+  animation-delay: 80ms;
+}

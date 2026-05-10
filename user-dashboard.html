@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard | ZNS Dental Clinic</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/user-dashboard.css" />
+</head>
+<body>
+  <main>
+    <section class="page app-page active">
+      <aside class="sidebar">
+        <div class="brand brand-light">
+          <img class="brand-mark" src="assets/logo.svg" alt="" />
+          <span>
+            <strong>ZNS</strong>
+            <small>Dental Clinic</small>
+          </span>
+        </div>
+        <div class="profile-chip">
+          <img class="profile-chip-photo" src="assets/patient-avatar.svg" alt="Profile picture" />
+          <div>
+            <strong>Patient</strong>
+            <small>User / Patient</small>
+          </div>
+        </div>
+        <nav class="side-nav" aria-label="Patient navigation">
+          <button class="active" type="button" data-patient-view="dashboard"><span class="nav-icon">D</span>Dashboard</button>
+          <button type="button" data-patient-view="appointments"><span class="nav-icon">A</span>My Appointments</button>
+          <button type="button" data-patient-view="record"><span class="nav-icon">R</span>My Dental Record</button>
+          <button type="button" data-patient-view="location"><span class="nav-icon">M</span>Location & Map</button>
+          <button type="button" data-patient-view="settings"><span class="nav-icon">S</span>Settings</button>
+          <button type="button" data-logout><span class="nav-icon">X</span>Log Out</button>
+        </nav>
+      </aside>
+
+      <section class="app-content">
+        <div class="mobile-appbar">
+          <button class="menu-toggle app-menu-toggle" type="button" aria-label="Open sidebar">
+            <span></span><span></span><span></span>
+          </button>
+          <strong>User / Patient Portal</strong>
+        </div>
+
+        <div class="patient-view active" data-patient-panel="dashboard">
+          <section class="dashboard-hero">
+            <div>
+              <span class="eyebrow">Patient Dashboard</span>
+              <h1 id="patient-welcome">Welcome back</h1>
+              <p>Here is your appointment overview.</p>
+            </div>
+            <div class="smile-card">Healthy Smile</div>
+          </section>
+
+          <div class="stat-grid">
+            <article class="stat-card"><strong id="upcoming-count">0</strong><span>Upcoming Appointment</span></article>
+            <article class="stat-card"><strong id="completed-count">0</strong><span>Completed Appointments</span></article>
+            <article class="stat-card"><strong id="cancelled-count">0</strong><span>Cancelled Appointments</span></article>
+          </div>
+
+          <div class="content-grid two-col">
+            <article class="panel">
+              <div class="panel-header">
+                <h2>Upcoming Appointment</h2>
+                <button class="btn btn-soft btn-small" type="button" data-patient-view="appointments">Request New</button>
+              </div>
+              <div id="upcoming-card" class="empty-state">No upcoming appointments yet.</div>
+            </article>
+            <article class="panel">
+              <div class="panel-header"><h2>Quick Services</h2></div>
+              <div class="quick-grid">
+                <button type="button" data-patient-view="appointments">Book Appointment</button>
+                <button type="button" data-patient-view="record">Dental Record</button>
+                <button type="button" data-focus-review>Add Review</button>
+                <button type="button" data-patient-view="location">Clinic Location</button>
+              </div>
+            </article>
+          </div>
+
+          <div class="content-grid two-col dashboard-review-panel" id="dashboard-review">
+            <form class="testimonial-form" id="testimonial-form">
+              <h3>Add Your Testimonial</h3>
+              <div class="form-row">
+                <label for="testimonialName">Your Name</label>
+                <input id="testimonialName" name="name" type="text" readonly />
+              </div>
+              <div class="form-row">
+                <label for="testimonialMessage">Message</label>
+                <textarea id="testimonialMessage" name="message" placeholder="Write what you want to say..." required></textarea>
+              </div>
+              <button class="btn" type="submit">Publish Review</button>
+            </form>
+            <article class="panel">
+              <h2>Published Reviews</h2>
+              <div class="testimonial-list" id="testimonial-list"></div>
+            </article>
+          </div>
+
+          <section class="reminder">
+            <strong>Reminder</strong>
+            <p>Brush twice a day and visit your dentist regularly.</p>
+          </section>
+        </div>
+
+        <div class="patient-view" data-patient-panel="appointments">
+          <section class="page-title">
+            <span class="eyebrow">My Appointments</span>
+            <h1>Request Appointment</h1>
+            <p>Fill out the form below. Records are saved only in this browser.</p>
+          </section>
+          <div class="content-grid two-col wide-left">
+            <form class="panel form-panel" id="appointment-form">
+              <div class="form-row"><label for="fullName">Full Name</label><input id="fullName" name="fullName" type="text" required /></div>
+              <div class="form-row"><label for="contactNumber">Contact Number</label><input id="contactNumber" name="contactNumber" type="tel" required /></div>
+              <div class="form-row"><label for="emailAddress">Email Address</label><input id="emailAddress" name="emailAddress" type="email" required /></div>
+              <div class="form-row"><label for="serviceSelect">Select Service</label><select id="serviceSelect" name="service" required></select></div>
+              <div class="form-row"><label for="preferredDate">Preferred Date</label><input id="preferredDate" name="date" type="date" required /></div>
+              <div class="form-row">
+                <label for="preferredTime">Preferred Time</label>
+                <select id="preferredTime" name="time" required>
+                  <option value="">Select time</option>
+                  <option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option>
+                  <option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="dentistSelect">Dentist</label>
+                <select id="dentistSelect" name="dentist">
+                  <option>Any Available Dentist</option>
+                  <option>Dra. Paula Glenn Z. Salamante</option>
+                  <option>Dr. Michael D. Santos</option>
+                  <option>Dr. Andrea M. Reyes</option>
+                </select>
+              </div>
+              <div class="form-row full"><label for="notes">Additional Notes</label><textarea id="notes" name="notes"></textarea></div>
+              <div class="form-actions full">
+                <button class="btn" type="submit">Submit Request</button>
+                <button class="btn btn-soft" type="reset">Clear</button>
+              </div>
+            </form>
+            <article class="panel">
+              <div class="panel-header">
+                <h2>Appointment Confirmation</h2>
+                <button class="btn btn-soft btn-small" type="button" id="print-confirmation">Print</button>
+              </div>
+              <div id="confirmation-box" class="empty-state">Submit or view an appointment to generate a confirmation.</div>
+            </article>
+          </div>
+
+          <article class="panel history-panel">
+            <div class="panel-header">
+              <h2>Appointment History</h2>
+              <input class="search-input" id="patient-search" type="search" placeholder="Search your appointments..." />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Time</th><th>Service</th><th>Dentist</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="patient-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div class="patient-view" data-patient-panel="record">
+          <section class="page-title">
+            <span class="eyebrow">My Dental Record</span>
+            <h1>Treatment Summary</h1>
+            <p>This section shows a simple client-side record summary for demonstration.</p>
+          </section>
+          <article class="panel" id="record-summary"></article>
+        </div>
+
+        <div class="patient-view" data-patient-panel="location">
+          <section class="page-title">
+            <span class="eyebrow">Location & Map</span>
+            <h1>Clinic Location</h1>
+            <p>181 Mc Arthur Highway, Dalandanan, Valenzuela, Philippines, 1443</p>
+          </section>
+          <div class="content-grid two-col">
+            <article class="panel">
+              <h2>Find the Clinic</h2>
+              <p>This uses the browser Geolocation API to read your current location when you allow it.</p>
+              <div class="location-actions">
+                <button class="btn" type="button" id="use-location">Use My Location</button>
+                <a class="btn btn-soft" id="directions-link" href="https://www.openstreetmap.org/search?query=181%20Mc%20Arthur%20Highway%20Dalandanan%20Valenzuela%20Philippines%201443" target="_blank" rel="noreferrer">Open Map</a>
+              </div>
+              <div id="location-result" class="empty-state">Allow location access to show your coordinates and quick map directions.</div>
+            </article>
+            <div class="map-box">
+              <iframe title="ZNS Dental Clinic map" src="https://www.google.com/maps?q=181%20Mc%20Arthur%20Highway%20Dalandanan%20Valenzuela%20Philippines%201443&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="patient-view" data-patient-panel="settings">
+          <section class="page-title">
+            <span class="eyebrow">Settings</span>
+            <h1>Profile Settings</h1>
+            <p>Update the account information saved in this browser.</p>
+          </section>
+          <form class="panel profile-form" id="profile-form">
+            <div class="profile-photo-card">
+              <img id="profile-preview" src="assets/patient-avatar.svg" alt="User profile preview" />
+              <label class="btn btn-soft btn-small" for="profilePhoto">Upload Picture</label>
+              <input id="profilePhoto" name="profilePhoto" type="file" accept="image/*" />
+            </div>
+            <div class="form-row"><label for="profileName">Full Name</label><input id="profileName" name="fullName" type="text" required /></div>
+            <div class="form-row"><label for="profileEmail">Email Address</label><input id="profileEmail" name="email" type="email" required /></div>
+            <div class="form-row"><label for="profilePhone">Contact Number</label><input id="profilePhone" name="phone" type="tel" required /></div>
+            <div class="form-row"><label for="profileRole">Account Type</label><input id="profileRole" name="role" type="text" readonly /></div>
+            <div class="form-actions full">
+              <button class="btn" type="submit">Save Profile</button>
+              <button class="btn btn-danger" type="button" id="clear-patient-data">Clear Local Appointment Data</button>
+            </div>
+          </form>
+        </div>
+
+        <footer class="site-footer compact-footer app-footer">
+          <div>
+            <strong>ZNS Dental Clinic</strong>
+            <p>User / Patient dashboard prototype.</p>
+          </div>
+          <div class="footer-bottom">&copy; 2026 ZNS Dental Clinic.</div>
+        </footer>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/shared.js"></script>
+  <script src="js/user-dashboard.js"></script>
+</body>
+</html>
