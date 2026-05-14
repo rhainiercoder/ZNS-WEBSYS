@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const user = ZNS.requireRole("patient");
   if (!user) return;
 
-  ZNS.createSampleAppointments();
   ZNS.seedTestimonials();
   ZNS.setupAppShell();
   ZNS.renderProfileChips(user);
@@ -18,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const testimonialList = ZNS.$("#testimonial-list");
   const locationResult = ZNS.$("#location-result");
   const directionsLink = ZNS.$("#directions-link");
+
+  appointmentForm.elements.date.min = new Date().toISOString().slice(0, 10);
 
   serviceSelect.innerHTML = `
     <option value="">Select a service</option>
@@ -35,9 +36,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (shouldScroll) window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function appointmentBelongsToUser(appointment, currentUser = ZNS.getCurrentUser()) {
+    if (!currentUser) return false;
+    return appointment.patientId === currentUser.id || (
+      !appointment.patientId &&
+      appointment.emailAddress &&
+      appointment.emailAddress.toLowerCase() === currentUser.email.toLowerCase()
+    );
+  }
+
+  function getPatientAppointments() {
+    return ZNS.getAppointments().filter((appointment) => appointmentBelongsToUser(appointment));
+  }
+
   function filteredAppointments() {
     const term = (patientSearch.value || "").toLowerCase();
-    return ZNS.getAppointments().filter((item) => (
+    return getPatientAppointments().filter((item) => (
       [item.fullName, item.service, item.date, item.time, item.dentist, item.status]
         .join(" ")
         .toLowerCase()
@@ -84,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderStats() {
-    const appointments = ZNS.getAppointments();
+    const appointments = getPatientAppointments();
     const upcoming = appointments.filter((item) => item.status === "Pending" || item.status === "Confirmed");
     const completed = appointments.filter((item) => item.status === "Completed");
     const cancelled = appointments.filter((item) => item.status === "Cancelled");
@@ -92,7 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ZNS.$("#upcoming-count").textContent = upcoming.length;
     ZNS.$("#completed-count").textContent = completed.length;
     ZNS.$("#cancelled-count").textContent = cancelled.length;
-    ZNS.$("#patient-welcome").textContent = `Welcome back, ${user.fullName.split(" ")[0]}!`;
+    const latestUser = ZNS.getCurrentUser();
+    ZNS.$("#patient-welcome").textContent = `Welcome back, ${(latestUser.fullName || "Patient").split(" ")[0]}!`;
 
     const upcomingCard = ZNS.$("#upcoming-card");
     const nextAppointment = upcoming[0];
@@ -112,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderRecordSummary() {
     const record = ZNS.$("#record-summary");
-    const appointments = ZNS.getAppointments();
+    const appointments = getPatientAppointments();
     const completed = appointments.filter((item) => item.status === "Completed");
 
     if (!appointments.length) {
@@ -172,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const viewConfirmation = event.target.closest("[data-view-confirmation]");
     if (viewConfirmation) {
-      const appointment = ZNS.getAppointments().find((item) => item.id === viewConfirmation.dataset.viewConfirmation);
+      const appointment = getPatientAppointments().find((item) => item.id === viewConfirmation.dataset.viewConfirmation);
       if (appointment) {
         renderConfirmation(appointment);
         setPatientView("appointments");
@@ -182,7 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const deleteButton = event.target.closest("[data-delete-appointment]");
     if (deleteButton) {
-      ZNS.saveAppointments(ZNS.getAppointments().filter((item) => item.id !== deleteButton.dataset.deleteAppointment));
+      ZNS.saveAppointments(ZNS.getAppointments().filter((item) => (
+        item.id !== deleteButton.dataset.deleteAppointment || !appointmentBelongsToUser(item)
+      )));
       renderAll();
       ZNS.showToast("Appointment deleted from local storage.");
     }
@@ -198,6 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData(appointmentForm);
     const appointment = {
       id: `ZNS-${Date.now().toString().slice(-6)}`,
+      patientId: ZNS.getCurrentUser().id,
       fullName: formData.get("fullName").trim(),
       contactNumber: formData.get("contactNumber").trim(),
       emailAddress: formData.get("emailAddress").trim(),
@@ -253,6 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const currentUser = ZNS.getCurrentUser();
     const formData = new FormData(profileForm);
+    const oldEmail = currentUser.email;
     const updatedUser = {
       ...currentUser,
       fullName: formData.get("fullName").trim(),
@@ -264,6 +283,18 @@ document.addEventListener("DOMContentLoaded", () => {
       account.id === updatedUser.id ? { ...account, ...updatedUser, password: account.password } : account
     ));
     ZNS.saveAccounts(accounts);
+    ZNS.saveAppointments(ZNS.getAppointments().map((appointment) => (
+      appointment.patientId === updatedUser.id ||
+      (!appointment.patientId && appointment.emailAddress && appointment.emailAddress.toLowerCase() === oldEmail.toLowerCase())
+        ? {
+            ...appointment,
+            patientId: updatedUser.id,
+            fullName: updatedUser.fullName,
+            emailAddress: updatedUser.email,
+            contactNumber: updatedUser.phone
+          }
+        : appointment
+    )));
     ZNS.setCurrentUser(updatedUser);
     renderAll();
     ZNS.showToast("Profile information saved.");
@@ -288,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   ZNS.$("#clear-patient-data").addEventListener("click", () => {
-    localStorage.removeItem("znsAppointments");
+    ZNS.saveAppointments(ZNS.getAppointments().filter((appointment) => !appointmentBelongsToUser(appointment)));
     renderAll();
     ZNS.showToast("Local appointment data cleared.");
   });

@@ -1,11 +1,11 @@
 const ZNS = (() => {
   const services = [
-    { name: "Teeth Cleaning", desc: "Routine cleaning for healthier teeth.", icon: "TC", image: "assets/service-cleaning.svg" },
-    { name: "Braces Consultation", desc: "Initial orthodontic consultation.", icon: "BC", image: "assets/service-braces.svg" },
-    { name: "Tooth Extraction", desc: "Safe removal consultation and care.", icon: "TE", image: "assets/service-extraction.svg" },
-    { name: "Dental Fillings", desc: "Restoration for damaged teeth.", icon: "DF", image: "assets/service-filling.svg" },
-    { name: "Teeth Whitening", desc: "Smile brightening treatment option.", icon: "TW", image: "assets/service-whitening.svg" },
-    { name: "General Check-up", desc: "Basic examination and assessment.", icon: "GC", image: "assets/service-checkup.svg" }
+    { name: "Teeth Cleaning", desc: "Routine cleaning for healthier teeth.", icon: "TC", image: "assets/dental_treatment.jpg" },
+    { name: "Braces Consultation", desc: "Initial orthodontic consultation.", icon: "BC", image: "assets/orthodontics.jpg" },
+    { name: "Tooth Extraction", desc: "Safe removal consultation and care.", icon: "TE", image: "assets/surgery_dentistry.jpg" },
+    { name: "Dental Fillings", desc: "Restoration for damaged teeth.", icon: "DF", image: "assets/service_1.jpg" },
+    { name: "Teeth Whitening", desc: "Smile brightening treatment option.", icon: "TW", image: "assets/cosmetic_dentistry.jpg" },
+    { name: "General Check-up", desc: "Basic examination and assessment.", icon: "GC", image: "assets/preventive_care.jpg" }
   ];
 
   const keys = {
@@ -103,12 +103,12 @@ const ZNS = (() => {
     if (getTestimonials().length) return;
     saveTestimonials([
       {
-        name: "Maria S.",
-        message: "The staff are very friendly and professional. The clinic is clean and the treatment is excellent."
+        name: "Mateo Lawrence",
+        message: "The best dental clinic in Valenzuela City with a very accommodating staffs. Dra. Glenn is a proficient and informative dentist that can treat your dental problems gently and without anything to worry about. Highly recommended!!!"
       },
       {
-        name: "Aaron B.",
-        message: "Booking is easier because the website shows the services and appointment request form clearly."
+        name: "Sioco Camille Ronquillo",
+        message: "Clinic is well-sanitized and disinfected all throughout. Doc Paula is the best dentist I’ve gone to. She has very gentle but sturdy hands during procedures, and is very caring and informative too. Highly recommended!"
       }
     ]);
   }
@@ -142,7 +142,7 @@ const ZNS = (() => {
         service: "Dental Fillings",
         date,
         time: "10:00 AM",
-        dentist: "Dr. Michael D. Santos",
+        dentist: "Dra. Adele",
         notes: "Sensitive tooth concern.",
         status: "Confirmed",
         createdAt: new Date().toISOString()
