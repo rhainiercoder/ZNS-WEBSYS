@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const appointmentForm = ZNS.$("#appointment-form");
   const serviceSelect = ZNS.$("#serviceSelect");
+  const dateInput = ZNS.$("#preferredDate");
+  const dentistSelect = ZNS.$("#dentistSelect");
   const confirmationBox = ZNS.$("#confirmation-box");
   const patientTable = ZNS.$("#patient-table");
   const patientSearch = ZNS.$("#patient-search");
@@ -20,12 +22,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const directionsLink = ZNS.$("#directions-link");
   let printableAppointment = null;
 
-  appointmentForm.elements.date.min = new Date().toISOString().slice(0, 10);
+  dateInput.min = ZNS.getTodayValue();
 
   serviceSelect.innerHTML = `
     <option value="">Select a service</option>
     ${ZNS.services.map((service) => `<option>${service.name}</option>`).join("")}
   `;
+
+  function updateDentistOptions() {
+    const selectedDate = dateInput.value;
+    if (!selectedDate) {
+      dentistSelect.innerHTML = `<option value="">Select a date first</option>`;
+      dentistSelect.disabled = true;
+      return;
+    }
+
+    const availableDentists = ZNS.getDentistsForDate(selectedDate);
+    if (!availableDentists.length) {
+      dentistSelect.innerHTML = `<option value="">No dentists available on ${ZNS.getDayName(selectedDate)}</option>`;
+      dentistSelect.disabled = true;
+      ZNS.showToast(`No dentists are scheduled on ${ZNS.getDayName(selectedDate)}.`);
+      return;
+    }
+
+    dentistSelect.disabled = false;
+    dentistSelect.innerHTML = `
+      <option value="">Select available dentist</option>
+      <option>Any Available Dentist</option>
+      ${availableDentists.map((dentist) => `<option>${dentist.name}</option>`).join("")}
+    `;
+  }
 
   function setPatientView(view, shouldScroll = true) {
     ZNS.$$("[data-patient-panel]").forEach((panel) => {
@@ -261,6 +287,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const formData = new FormData(appointmentForm);
+    const availableDentistNames = ZNS.getDentistsForDate(formData.get("date")).map((dentist) => dentist.name);
+    if (!availableDentistNames.length) {
+      ZNS.showToast("No dentists are available on your chosen date.");
+      updateDentistOptions();
+      return;
+    }
+
+    const selectedDentist = formData.get("dentist");
+    if (selectedDentist !== "Any Available Dentist" && !availableDentistNames.includes(selectedDentist)) {
+      ZNS.showToast("Please choose a dentist available on your selected date.");
+      updateDentistOptions();
+      return;
+    }
+
     const appointment = {
       id: `ZNS-${Date.now().toString().slice(-6)}`,
       patientId: ZNS.getCurrentUser().id,
@@ -270,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
       service: formData.get("service"),
       date: formData.get("date"),
       time: formData.get("time"),
-      dentist: formData.get("dentist"),
+      dentist: selectedDentist,
       notes: formData.get("notes").trim(),
       status: "Pending",
       createdAt: new Date().toISOString()
@@ -281,6 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ZNS.saveAppointments(appointments);
     renderConfirmation(appointment);
     appointmentForm.reset();
+    updateDentistOptions();
     renderAll();
     ZNS.showToast("Appointment request saved in this browser.");
   });
@@ -305,6 +346,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   patientSearch.addEventListener("input", renderPatientTable);
+  dateInput.addEventListener("change", updateDentistOptions);
+  updateDentistOptions();
 
   testimonialForm.addEventListener("submit", (event) => {
     event.preventDefault();

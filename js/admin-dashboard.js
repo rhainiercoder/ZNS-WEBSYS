@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const adminAppointmentsStatus = ZNS.$("#admin-appointments-status");
   const adminProfileForm = ZNS.$("#admin-profile-form");
   const adminProfilePreview = ZNS.$("#admin-profile-preview");
+  const today = ZNS.getTodayValue();
 
   function setAdminView(view, shouldScroll = true) {
     ZNS.$$("[data-admin-panel]").forEach((panel) => {
@@ -74,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const uniquePatients = new Set(appointments.map((item) => item.fullName));
     ZNS.$("#admin-request-count").textContent = appointments.length;
     ZNS.$("#admin-patient-count").textContent = uniquePatients.size;
+    ZNS.$("#admin-dentist-count").textContent = ZNS.getDentistsForDate(today).length;
   }
 
   function renderPatients() {
@@ -141,6 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderDentistAvailability() {
+    ZNS.$("#admin-dentist-day").textContent = `Dentists scheduled for today, ${ZNS.getDayName(today)}.`;
+    ZNS.renderDentists(ZNS.$("#admin-dentist-grid"), today);
+  }
+
   function fillProfileForm() {
     const currentUser = ZNS.getCurrentUser();
     ZNS.renderProfileChips(currentUser);
@@ -156,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderStats();
     renderPatients();
     renderReport();
+    renderDentistAvailability();
     fillProfileForm();
   }
 

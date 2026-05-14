@@ -8,6 +8,30 @@ const ZNS = (() => {
     { name: "General Check-up", desc: "Basic examination and assessment.", icon: "GC", image: "assets/preventive_care.jpg" }
   ];
 
+  const dentists = [
+    {
+      name: "Dra. Paula Glenn Z. Salamante",
+      role: "General Dentist",
+      image: "assets/dr_salamante.JPG",
+      days: [1, 3, 5],
+      schedule: "Mon, Wed, Fri - 8:00 AM to 5:00 PM"
+    },
+    {
+      name: "Dra. Adele",
+      role: "Dentist",
+      image: "assets/ms_adele.jpg",
+      days: [2, 4],
+      schedule: "Tue, Thu - 9:00 AM to 4:00 PM"
+    },
+    {
+      name: "Dra. Joy",
+      role: "Dentist",
+      image: "assets/ms_joy.jpg",
+      days: [6],
+      schedule: "Saturday - 8:30 AM to 3:30 PM"
+    }
+  ];
+
   const keys = {
     appointments: "znsAppointments",
     accounts: "znsAccounts",
@@ -147,6 +171,26 @@ const ZNS = (() => {
     });
   }
 
+  function getTodayValue() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function getDayName(dateValue) {
+    if (!dateValue) return "";
+    const date = new Date(`${dateValue}T00:00:00`);
+    return date.toLocaleDateString("en-US", { weekday: "long" });
+  }
+
+  function getDentistsForDate(dateValue) {
+    if (!dateValue) return dentists;
+    const date = new Date(`${dateValue}T00:00:00`);
+    return dentists.filter((dentist) => dentist.days.includes(date.getDay()));
+  }
+
   function statusBadge(status) {
     return `<span class="status ${status}">${status}</span>`;
   }
@@ -162,6 +206,24 @@ const ZNS = (() => {
         ${mode === "admin"
           ? `<button class="service-action" type="button" data-admin-view="appointments">View Requests</button>`
           : `<a class="service-action" href="login.html?tab=login">Request Service</a>`}
+      </article>
+    `).join("");
+  }
+
+  function renderDentists(target, dateValue = getTodayValue()) {
+    if (!target) return;
+    const availableDentists = getDentistsForDate(dateValue);
+    if (!availableDentists.length) {
+      target.innerHTML = `<article class="panel empty-state">No dentists are scheduled for ${getDayName(dateValue)}.</article>`;
+      return;
+    }
+
+    target.innerHTML = availableDentists.map((dentist) => `
+      <article class="doctor-card">
+        <div class="avatar"><img src="${dentist.image}" alt="${dentist.name}" /></div>
+        <h3>${dentist.name}</h3>
+        <p>${dentist.role}</p>
+        <small>${dentist.schedule}</small>
       </article>
     `).join("");
   }
@@ -292,6 +354,7 @@ const ZNS = (() => {
     $,
     $$,
     services,
+    dentists,
     clinicAddress,
     getAppointments,
     saveAppointments,
@@ -308,8 +371,12 @@ const ZNS = (() => {
     createSampleAppointments,
     showToast,
     formatDate,
+    getTodayValue,
+    getDayName,
+    getDentistsForDate,
     statusBadge,
     renderServices,
+    renderDentists,
     renderTestimonials,
     renderProfileChips,
     setupTopbar,
