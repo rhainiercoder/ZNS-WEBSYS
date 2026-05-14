@@ -1175,6 +1175,14 @@ p {
   padding: 1.15rem;
 }
 
+.note-panel {
+  align-self: start;
+}
+
+.note-panel p:last-child {
+  margin-bottom: 0;
+}
+
 .panel-header {
   display: flex;
   align-items: center;

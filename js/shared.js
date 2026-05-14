@@ -99,6 +99,18 @@ const ZNS = (() => {
     }
   }
 
+  function removeOldDemoAppointments() {
+    const appointments = getAppointments().filter((appointment) => (
+      appointment.id !== "ZNS-1001" &&
+      appointment.id !== "ZNS-1002" &&
+      appointment.emailAddress !== "maria@example.com" &&
+      appointment.emailAddress !== "juan@example.com" &&
+      appointment.fullName !== "Maria Santos" &&
+      appointment.fullName !== "Juan Dela Cruz"
+    ));
+    saveAppointments(appointments);
+  }
+
   function seedTestimonials() {
     if (getTestimonials().length) return;
     saveTestimonials([
@@ -114,40 +126,7 @@ const ZNS = (() => {
   }
 
   function createSampleAppointments() {
-    if (getAppointments().length) return;
-
-    const future = new Date();
-    future.setDate(future.getDate() + 3);
-    const date = future.toISOString().slice(0, 10);
-
-    saveAppointments([
-      {
-        id: "ZNS-1001",
-        fullName: "Maria Santos",
-        contactNumber: "0912 345 6789",
-        emailAddress: "maria@example.com",
-        service: "Teeth Cleaning",
-        date,
-        time: "9:00 AM",
-        dentist: "Dra. Paula Glenn Z. Salamante",
-        notes: "First appointment request.",
-        status: "Pending",
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: "ZNS-1002",
-        fullName: "Juan Dela Cruz",
-        contactNumber: "0917 222 3333",
-        emailAddress: "juan@example.com",
-        service: "Dental Fillings",
-        date,
-        time: "10:00 AM",
-        dentist: "Dra. Adele",
-        notes: "Sensitive tooth concern.",
-        status: "Confirmed",
-        createdAt: new Date().toISOString()
-      }
-    ]);
+    if (!getAppointments().length) saveAppointments([]);
   }
 
   function showToast(message) {
@@ -324,6 +303,7 @@ const ZNS = (() => {
     setCurrentUser,
     clearCurrentUser,
     removeOldDemoAccounts,
+    removeOldDemoAppointments,
     seedTestimonials,
     createSampleAppointments,
     showToast,
