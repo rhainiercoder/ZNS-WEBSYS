@@ -1657,6 +1657,9 @@ td {
 }
 
 @media (max-width: 980px) {
+  .sidebar {
+    z-index: 40; /* above backdrop */
+  }
   .sidebar-backdrop {
     position: fixed;
     inset: 0;
