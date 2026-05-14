@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const user = ZNS.requireRole("patient");
   if (!user) return;
 
-  ZNS.removeOldDemoAppointments();
+  ZNS.removeOldDemoAppointments?.();
   ZNS.seedTestimonials();
   ZNS.setupAppShell();
   ZNS.renderProfileChips(user);

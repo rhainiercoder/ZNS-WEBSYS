@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const user = ZNS.requireRole("admin");
   if (!user) return;
 
-  ZNS.removeOldDemoAppointments();
+  ZNS.removeOldDemoAppointments?.();
   ZNS.setupAppShell();
   ZNS.renderProfileChips(user);
   ZNS.renderServices(ZNS.$("#admin-service-grid"), "admin");
