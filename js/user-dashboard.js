@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const testimonialList = ZNS.$("#testimonial-list");
   const locationResult = ZNS.$("#location-result");
   const directionsLink = ZNS.$("#directions-link");
+  let printableAppointment = null;
 
   appointmentForm.elements.date.min = new Date().toISOString().slice(0, 10);
 
@@ -60,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderConfirmation(appointment) {
+    printableAppointment = appointment;
     confirmationBox.className = "confirmation-card";
     confirmationBox.innerHTML = `
       <div class="confirmation-brand">
@@ -80,6 +82,42 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <p class="confirmation-note">Please arrive 10 minutes before your appointment time. Bring this confirmation when you visit the clinic.</p>
     `;
+  }
+
+  function buildPrintSheet(appointment) {
+    const oldSheet = ZNS.$("#confirmation-print-sheet");
+    if (oldSheet) oldSheet.remove();
+
+    const sheet = document.createElement("section");
+    sheet.id = "confirmation-print-sheet";
+    sheet.className = "confirmation-print-sheet";
+    sheet.innerHTML = `
+      <header class="print-confirmation-header">
+        <img src="assets/logo.png" alt="" />
+        <div>
+          <h1>ZNS Dental Clinic</h1>
+          <p>Appointment Confirmation</p>
+        </div>
+      </header>
+      <div class="print-reference">
+        <span>Reference No.</span>
+        <strong>${appointment.id}</strong>
+      </div>
+      <dl class="print-confirmation-details">
+        <div><dt>Patient</dt><dd>${appointment.fullName}</dd></div>
+        <div><dt>Service</dt><dd>${appointment.service}</dd></div>
+        <div><dt>Date</dt><dd>${ZNS.formatDate(appointment.date)}</dd></div>
+        <div><dt>Time</dt><dd>${appointment.time}</dd></div>
+        <div><dt>Dentist</dt><dd>${appointment.dentist}</dd></div>
+        <div><dt>Status</dt><dd>${appointment.status}</dd></div>
+      </dl>
+      <p class="print-confirmation-note">Please arrive 10 minutes before your appointment time. Bring this confirmation when you visit the clinic.</p>
+      <footer class="print-confirmation-footer">
+        <strong>181 Mc Arthur Highway, Dalandanan, Valenzuela</strong>
+        <span>0932 162 7663 | znsdentalclinic@gmail.com</span>
+      </footer>
+    `;
+    document.body.appendChild(sheet);
   }
 
   function renderPatientTable() {
@@ -251,12 +289,18 @@ document.addEventListener("DOMContentLoaded", () => {
       ZNS.showToast("Submit or view an appointment first.");
       return;
     }
+    if (!printableAppointment) {
+      ZNS.showToast("View an appointment confirmation first.");
+      return;
+    }
+    buildPrintSheet(printableAppointment);
     document.body.classList.add("printing-confirmation");
-    window.print();
+    requestAnimationFrame(() => window.print());
   });
 
   window.addEventListener("afterprint", () => {
     document.body.classList.remove("printing-confirmation");
+    ZNS.$("#confirmation-print-sheet")?.remove();
   });
 
   patientSearch.addEventListener("input", renderPatientTable);

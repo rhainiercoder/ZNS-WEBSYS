@@ -1629,7 +1629,8 @@ td {
   border-bottom: 1px solid var(--line);
 }
 
-.confirmation-brand img {
+#confirmation-box .confirmation-brand img {
+  flex: 0 0 3.2rem;
   width: 3.4rem;
   height: 3.4rem;
   object-fit: cover;
@@ -1648,15 +1649,17 @@ td {
 
 .confirmation-details {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.45rem;
 }
 
 .confirmation-details span {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 0.45fr) minmax(0, 1fr);
+  align-items: start;
   gap: 1rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(7, 152, 167, 0.1);
+  overflow-wrap: anywhere;
 }
 
 .confirmation-details b {
@@ -1671,6 +1674,10 @@ td {
   border-radius: var(--radius);
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+.confirmation-print-sheet {
+  display: none;
 }
 
 .reveal {
@@ -1903,89 +1910,133 @@ td {
 @media print {
   @page {
     size: Letter;
-    margin: 0.65in;
+    margin: 0.5in;
   }
 
   html,
   body {
     width: auto;
     min-height: 0;
-    color: #07384a;
     background: #ffffff !important;
   }
 
-  body.printing-confirmation * {
-    visibility: hidden !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+  body.printing-confirmation > :not(.confirmation-print-sheet) {
+    display: none !important;
   }
 
-  body.printing-confirmation #confirmation-box,
-  body.printing-confirmation #confirmation-box * {
+  body.printing-confirmation .confirmation-print-sheet,
+  body.printing-confirmation .confirmation-print-sheet * {
+    box-sizing: border-box;
+    color: #07384a !important;
     visibility: visible !important;
   }
 
-  body.printing-confirmation #confirmation-box {
-    position: fixed !important;
-    inset: 0 auto auto 0 !important;
-    display: grid !important;
-    width: 100% !important;
-    max-width: none !important;
-    padding: 0.35in !important;
-    color: #07384a !important;
+  body.printing-confirmation .confirmation-print-sheet {
+    display: block !important;
+    width: 100%;
+    min-height: 0;
+    padding: 0.32in;
     background: #ffffff !important;
-    border: 2px solid #0798a7 !important;
-    border-radius: 0 !important;
+    border: 2px solid #0798a7;
     break-inside: avoid;
     page-break-inside: avoid;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
-  body.printing-confirmation #confirmation-box::after {
-    content: "181 Mc Arthur Highway, Dalandanan, Valenzuela | 0932 162 7663";
-    display: block;
-    margin-top: 0.2in;
-    padding-top: 0.16in;
-    color: #5c7d88;
-    border-top: 1px solid #d9edf1;
-    font-size: 10pt;
-    text-align: center;
+  .print-confirmation-header {
+    display: grid;
+    grid-template-columns: 0.85in 1fr;
+    gap: 0.18in;
+    align-items: center;
+    padding-bottom: 0.18in;
+    border-bottom: 2px solid #d9edf1;
   }
 
-  body.printing-confirmation .confirmation-brand {
-    border-bottom: 2px solid #d9edf1 !important;
+  .print-confirmation-header img {
+    width: 0.78in;
+    height: 0.78in;
+    object-fit: cover;
+    border-radius: 50%;
   }
 
-  body.printing-confirmation .confirmation-brand img {
-    width: 0.65in;
-    height: 0.65in;
+  .print-confirmation-header h1 {
+    margin: 0;
+    color: #046574 !important;
+    font-size: 20pt;
+    line-height: 1.1;
   }
 
-  body.printing-confirmation .confirmation-brand strong {
-    font-size: 18pt;
-  }
-
-  body.printing-confirmation .confirmation-brand small {
-    font-size: 10pt;
-    letter-spacing: 0;
+  .print-confirmation-header p {
+    margin: 0.04in 0 0;
+    color: #5c7d88 !important;
+    font-size: 11pt;
+    font-weight: 700;
     text-transform: uppercase;
   }
 
-  body.printing-confirmation .confirmation-details {
-    gap: 0;
-    margin-top: 0.12in;
+  .print-reference {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.2in;
+    margin: 0.22in 0;
+    padding: 0.14in 0.16in;
+    background: #f4fbfc !important;
+    border: 1px solid #d9edf1;
     font-size: 11pt;
   }
 
-  body.printing-confirmation .confirmation-details span {
-    padding: 0.11in 0;
-    border-bottom: 1px solid #d9edf1 !important;
+  .print-reference span {
+    color: #5c7d88 !important;
+    font-weight: 700;
   }
 
-  body.printing-confirmation .confirmation-note {
-    margin-top: 0.16in;
+  .print-confirmation-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.1in 0.22in;
+    margin: 0;
+  }
+
+  .print-confirmation-details div {
+    padding: 0.11in 0;
+    border-bottom: 1px solid #d9edf1;
+    break-inside: avoid;
+  }
+
+  .print-confirmation-details dt {
+    margin: 0 0 0.03in;
+    color: #5c7d88 !important;
+    font-size: 9pt;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .print-confirmation-details dd {
+    margin: 0;
     color: #07384a !important;
-    background: #f4fbfc !important;
+    font-size: 12pt;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  .print-confirmation-note {
+    margin: 0.22in 0 0;
+    padding: 0.14in 0.16in;
+    color: #046574 !important;
+    background: #dff8ef !important;
     border: 1px solid #d9edf1;
-    font-size: 10pt;
+    font-size: 10.5pt;
+    font-weight: 700;
+  }
+
+  .print-confirmation-footer {
+    display: grid;
+    gap: 0.04in;
+    margin-top: 0.26in;
+    padding-top: 0.16in;
+    border-top: 1px solid #d9edf1;
+    color: #5c7d88 !important;
+    font-size: 9.5pt;
+    text-align: center;
   }
 }
