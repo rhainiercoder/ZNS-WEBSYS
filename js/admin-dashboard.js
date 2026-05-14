@@ -78,16 +78,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderPatients() {
     const list = ZNS.$("#admin-patient-list");
+    const accounts = ZNS.getAccounts();
     const grouped = ZNS.getAppointments().reduce((patients, item) => {
-      if (!patients[item.fullName]) {
-        patients[item.fullName] = {
-          name: item.fullName,
-          contact: item.contactNumber,
-          email: item.emailAddress,
+      const account = accounts.find((entry) => (
+        entry.role === "patient" &&
+        (
+          entry.id === item.patientId ||
+          (entry.email && item.emailAddress && entry.email.toLowerCase() === item.emailAddress.toLowerCase())
+        )
+      ));
+      const key = account?.id || item.patientId || item.emailAddress || item.fullName;
+
+      if (!patients[key]) {
+        patients[key] = {
+          name: account?.fullName || item.fullName,
+          contact: account?.phone || item.contactNumber,
+          email: account?.email || item.emailAddress,
+          avatar: account?.avatar,
           count: 0
         };
       }
-      patients[item.fullName].count += 1;
+      patients[key].count += 1;
       return patients;
     }, {});
 
@@ -97,9 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const defaultAvatar = "assets/patient-avatar.svg";
     list.innerHTML = patients.map((patient) => `
       <article class="record-card">
-        <span class="record-avatar">${patient.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}</span>
+        ${patient.avatar && patient.avatar !== defaultAvatar
+          ? `<img class="record-avatar record-avatar-photo" src="${patient.avatar}" alt="${patient.name} profile picture" />`
+          : `<span class="record-avatar">${patient.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}</span>`}
         <div>
           <h3>${patient.name}</h3>
           <p>${patient.email}</p>
