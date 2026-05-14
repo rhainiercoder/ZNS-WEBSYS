@@ -340,11 +340,6 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(() => window.print());
   });
 
-  window.addEventListener("afterprint", () => {
-    document.body.classList.remove("printing-confirmation");
-    ZNS.$("#confirmation-print-sheet")?.remove();
-  });
-
   patientSearch.addEventListener("input", renderPatientTable);
   dateInput.addEventListener("change", updateDentistOptions);
   updateDentistOptions();
