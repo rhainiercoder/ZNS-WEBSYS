@@ -1657,6 +1657,28 @@ td {
 }
 
 @media (max-width: 980px) {
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 20, 25, 0.35);
+    z-index: 35; /* must be below sidebar */
+  }
+
+  .sidebar-close {
+    position: sticky;
+    top: 0;
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 0;
+    border-radius: 10px;
+    color: var(--teal-dark);
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1.1rem;
+    font-weight: 900;
+  }
   .menu-toggle {
     display: block;
   }

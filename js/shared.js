@@ -252,28 +252,52 @@ const ZNS = (() => {
   }
 
   function setupAppShell() {
-    $$(".app-menu-toggle").forEach((button) => {
+    const closeAllSidebars = () => {
+      document.querySelectorAll(".sidebar.open").forEach((s) => s.classList.remove("open"));
+      document.querySelectorAll(".sidebar-backdrop").forEach((b) => b.remove());
+    };
+
+    const ensureBackdrop = (appPage) => {
+      if (appPage.querySelector(".sidebar-backdrop")) return;
+      const backdrop = document.createElement("div");
+      backdrop.className = "sidebar-backdrop";
+      backdrop.addEventListener("click", closeAllSidebars);
+      appPage.appendChild(backdrop);
+    };
+
+    document.querySelectorAll(".app-menu-toggle").forEach((button) => {
       button.addEventListener("click", () => {
-        const sidebar = button.closest(".app-page").querySelector(".sidebar");
-        sidebar.classList.toggle("open");
+        const appPage = button.closest(".app-page");
+        const sidebar = appPage.querySelector(".sidebar");
+        const willOpen = !sidebar.classList.contains("open");
+
+        closeAllSidebars();
+        if (willOpen) {
+          sidebar.classList.add("open");
+          ensureBackdrop(appPage);
+
+          // X button inside sidebar
+          const closeBtn = sidebar.querySelector(".sidebar-close");
+          if (closeBtn) closeBtn.addEventListener("click", closeAllSidebars, { once: true });
+        }
       });
     });
 
+    // Close when user taps a nav item (mobile)
     document.addEventListener("click", (event) => {
+      if (event.target.closest(".side-nav button")) closeAllSidebars();
+
       const logout = event.target.closest("[data-logout]");
       if (!logout) return;
-      clearCurrentUser();
+      closeAllSidebars();
+      localStorage.removeItem("znsCurrentUser");
       window.location.href = "homepage.html";
     });
-  }
 
-  function requireRole(role) {
-    const user = getCurrentUser();
-    if (!user || user.role !== role) {
-      window.location.href = "login.html?tab=login";
-      return null;
-    }
-    return user;
+    // Close on Esc (desktop)
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeAllSidebars();
+    });
   }
 
   return {
