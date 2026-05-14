@@ -300,6 +300,15 @@ const ZNS = (() => {
     });
   }
 
+  function requireRole(role) {
+    const user = getCurrentUser();
+    if (!user || user.role !== role) {
+      window.location.href = "login.html?tab=login";
+      return null;
+    }
+    return user;
+  }
+
   return {
     $,
     $$,
