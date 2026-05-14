@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const adminStatusFilter = ZNS.$("#admin-status-filter");
   const adminAppointmentsSearch = ZNS.$("#admin-appointments-search");
   const adminAppointmentsStatus = ZNS.$("#admin-appointments-status");
+  const adminProfileForm = ZNS.$("#admin-profile-form");
+  const adminProfilePreview = ZNS.$("#admin-profile-preview");
 
   function setAdminView(view, shouldScroll = true) {
     ZNS.$$("[data-admin-panel]").forEach((panel) => {
@@ -124,20 +126,14 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  function renderProfileSummary() {
+  function fillProfileForm() {
     const currentUser = ZNS.getCurrentUser();
     ZNS.renderProfileChips(currentUser);
-    ZNS.$("#admin-profile-summary").innerHTML = `
-      <div class="profile-summary-grid">
-        <img src="${currentUser.avatar || "assets/patient-avatar.svg"}" alt="Admin profile" />
-        <div>
-          <h2>${currentUser.fullName}</h2>
-          <p>Admin / Clinic Staff & Dentist</p>
-          <p><strong>Email:</strong> ${currentUser.email}</p>
-          <p><strong>Contact:</strong> ${currentUser.phone}</p>
-        </div>
-      </div>
-    `;
+    adminProfileForm.elements.fullName.value = currentUser.fullName || "";
+    adminProfileForm.elements.email.value = currentUser.email || "";
+    adminProfileForm.elements.phone.value = currentUser.phone || "";
+    adminProfileForm.elements.role.value = "Admin / Clinic Staff & Dentist";
+    adminProfilePreview.src = currentUser.avatar || "assets/patient-avatar.svg";
   }
 
   function renderAll() {
@@ -145,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderStats();
     renderPatients();
     renderReport();
-    renderProfileSummary();
+    fillProfileForm();
   }
 
   document.addEventListener("click", (event) => {
@@ -171,6 +167,44 @@ document.addEventListener("DOMContentLoaded", () => {
   [adminSearch, adminStatusFilter, adminAppointmentsSearch, adminAppointmentsStatus].forEach((control) => {
     control.addEventListener("input", renderTables);
     control.addEventListener("change", renderTables);
+  });
+
+  adminProfileForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const currentUser = ZNS.getCurrentUser();
+    const formData = new FormData(adminProfileForm);
+    const updatedUser = {
+      ...currentUser,
+      fullName: formData.get("fullName").trim(),
+      email: formData.get("email").trim().toLowerCase(),
+      phone: formData.get("phone").trim()
+    };
+
+    const accounts = ZNS.getAccounts().map((account) => (
+      account.id === updatedUser.id ? { ...account, ...updatedUser, password: account.password } : account
+    ));
+    ZNS.saveAccounts(accounts);
+    ZNS.setCurrentUser(updatedUser);
+    renderAll();
+    ZNS.showToast("Admin profile information saved.");
+  });
+
+  adminProfileForm.elements.profilePhoto.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      const updatedUser = { ...ZNS.getCurrentUser(), avatar: reader.result };
+      const accounts = ZNS.getAccounts().map((account) => (
+        account.id === updatedUser.id ? { ...account, avatar: reader.result } : account
+      ));
+      ZNS.saveAccounts(accounts);
+      ZNS.setCurrentUser(updatedUser);
+      renderAll();
+      ZNS.showToast("Admin profile picture updated.");
+    });
+    reader.readAsDataURL(file);
   });
 
   renderAll();

@@ -129,8 +129,21 @@
         </div>
 
         <div class="admin-view" data-admin-panel="settings">
-          <section class="page-title"><span class="eyebrow">Admin Settings</span><h1>Account Information</h1><p>View the current simulated admin profile stored in the browser.</p></section>
-          <article class="panel profile-summary" id="admin-profile-summary"></article>
+          <section class="page-title"><span class="eyebrow">Admin Settings</span><h1>Profile Settings</h1><p>Update the admin account information saved in this browser.</p></section>
+          <form class="panel profile-form" id="admin-profile-form">
+            <div class="profile-photo-card">
+              <img id="admin-profile-preview" src="assets/patient-avatar.svg" alt="Admin profile preview" />
+              <label class="btn btn-soft btn-small" for="adminProfilePhoto">Upload Picture</label>
+              <input id="adminProfilePhoto" name="profilePhoto" type="file" accept="image/*" />
+            </div>
+            <div class="form-row"><label for="adminProfileName">Full Name</label><input id="adminProfileName" name="fullName" type="text" required /></div>
+            <div class="form-row"><label for="adminProfileEmail">Email Address</label><input id="adminProfileEmail" name="email" type="email" required /></div>
+            <div class="form-row"><label for="adminProfilePhone">Contact Number</label><input id="adminProfilePhone" name="phone" type="tel" required /></div>
+            <div class="form-row"><label for="adminProfileRole">Account Type</label><input id="adminProfileRole" name="role" type="text" readonly /></div>
+            <div class="form-actions full">
+              <button class="btn" type="submit">Save Profile</button>
+            </div>
+          </form>
         </div>
 
         <footer class="site-footer compact-footer app-footer">

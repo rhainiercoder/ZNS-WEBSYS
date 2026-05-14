@@ -62,14 +62,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderConfirmation(appointment) {
     confirmationBox.className = "confirmation-card";
     confirmationBox.innerHTML = `
-      <strong>ZNS Dental Clinic Appointment Confirmation</strong>
-      <span><b>Patient:</b> ${appointment.fullName}</span>
-      <span><b>Service:</b> ${appointment.service}</span>
-      <span><b>Date:</b> ${ZNS.formatDate(appointment.date)}</span>
-      <span><b>Time:</b> ${appointment.time}</span>
-      <span><b>Dentist:</b> ${appointment.dentist}</span>
-      <span><b>Status:</b> ${appointment.status}</span>
-      <span><b>Reference No.:</b> ${appointment.id}</span>
+      <div class="confirmation-brand">
+        <img src="assets/logo.png" alt="" />
+        <div>
+          <strong>ZNS Dental Clinic</strong>
+          <small>Appointment Confirmation</small>
+        </div>
+      </div>
+      <div class="confirmation-details">
+        <span><b>Patient</b>${appointment.fullName}</span>
+        <span><b>Service</b>${appointment.service}</span>
+        <span><b>Date</b>${ZNS.formatDate(appointment.date)}</span>
+        <span><b>Time</b>${appointment.time}</span>
+        <span><b>Dentist</b>${appointment.dentist}</span>
+        <span><b>Status</b>${appointment.status}</span>
+        <span><b>Reference No.</b>${appointment.id}</span>
+      </div>
+      <p class="confirmation-note">Please arrive 10 minutes before your appointment time. Bring this confirmation when you visit the clinic.</p>
     `;
   }
 
@@ -242,7 +251,12 @@ document.addEventListener("DOMContentLoaded", () => {
       ZNS.showToast("Submit or view an appointment first.");
       return;
     }
+    document.body.classList.add("printing-confirmation");
     window.print();
+  });
+
+  window.addEventListener("afterprint", () => {
+    document.body.classList.remove("printing-confirmation");
   });
 
   patientSearch.addEventListener("input", renderPatientTable);
