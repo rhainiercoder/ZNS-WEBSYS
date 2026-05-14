@@ -80,12 +80,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = ZNS.$("#admin-patient-list");
     const accounts = ZNS.getAccounts();
     const grouped = ZNS.getAppointments().reduce((patients, item) => {
+      const appointmentEmail = (item.emailAddress || "").trim().toLowerCase();
       const account = accounts.find((entry) => (
-        entry.role === "patient" &&
-        (
-          entry.id === item.patientId ||
-          (entry.email && item.emailAddress && entry.email.toLowerCase() === item.emailAddress.toLowerCase())
-        )
+        entry.id === item.patientId ||
+        ((entry.email || "").trim().toLowerCase() && (entry.email || "").trim().toLowerCase() === appointmentEmail)
       ));
       const key = account?.id || item.patientId || item.emailAddress || item.fullName;
 
@@ -94,9 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
           name: account?.fullName || item.fullName,
           contact: account?.phone || item.contactNumber,
           email: account?.email || item.emailAddress,
-          avatar: account?.avatar,
+          avatar: account?.avatar || item.patientAvatar || item.avatar,
           count: 0
         };
+      }
+      if (!patients[key].avatar && (account?.avatar || item.patientAvatar || item.avatar)) {
+        patients[key].avatar = account?.avatar || item.patientAvatar || item.avatar;
       }
       patients[key].count += 1;
       return patients;

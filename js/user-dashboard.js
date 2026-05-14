@@ -348,6 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ? {
             ...appointment,
             patientId: updatedUser.id,
+            patientAvatar: updatedUser.avatar,
             fullName: updatedUser.fullName,
             emailAddress: updatedUser.email,
             contactNumber: updatedUser.phone
@@ -369,7 +370,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const accounts = ZNS.getAccounts().map((account) => (
         account.id === updatedUser.id ? { ...account, avatar: reader.result } : account
       ));
+      const appointments = ZNS.getAppointments().map((appointment) => (
+        appointmentBelongsToUser(appointment, updatedUser)
+          ? { ...appointment, patientId: updatedUser.id, patientAvatar: reader.result }
+          : appointment
+      ));
       ZNS.saveAccounts(accounts);
+      ZNS.saveAppointments(appointments);
       ZNS.setCurrentUser(updatedUser);
       renderAll();
       ZNS.showToast("Profile picture updated.");
